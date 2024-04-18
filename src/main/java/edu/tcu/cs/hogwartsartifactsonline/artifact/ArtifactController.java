@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/artifacts")
+@RequestMapping("${api.endpoint.base-url}/artifacts")
 public class ArtifactController {
     private final ArtifactService artifactService;
     private final ArtifactToArtifactDtoConverter artifactToArtifactDtoConverter;
@@ -53,7 +53,7 @@ public class ArtifactController {
        return new Result(true, StatusCode.SUCCESS, "Success", savedArtifactDto);
     }
     @PutMapping("/{artifactId}")
-    public Result updateArtifact(@PathVariable String artifactId, @Validated @RequestBody ArtifactDto artifactDto){
+    public Result updateArtifact(@PathVariable String artifactId, @RequestBody ArtifactDto artifactDto){
         Artifact update = this.artifactDtoToArtifactConverter.convert(artifactDto);
         Artifact updatedArtifact = this.artifactService.update(artifactId, update);
         ArtifactDto updatedArtifactDto = this.artifactToArtifactDtoConverter.convert(updatedArtifact);

@@ -12,10 +12,10 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
-public class CustomBearerTokenEntryPoint implements AuthenticationEntryPoint {
+public class CustomBearerTokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final HandlerExceptionResolver resolver;
 
-    public CustomBearerTokenEntryPoint(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+    public CustomBearerTokenAuthenticationEntryPoint(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
 

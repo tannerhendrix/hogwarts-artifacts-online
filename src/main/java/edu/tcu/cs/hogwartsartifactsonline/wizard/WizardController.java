@@ -5,6 +5,7 @@ import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.dto.WizardDto;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.converter.WizardDtoToWizardConverter;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.converter.WizardToWizardDtoConverter;
+import jdk.jshell.Snippet;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -55,6 +56,11 @@ public class WizardController {
                 .collect(Collectors.toList());
         return new Result(true, StatusCode.SUCCESS, "Find All Success", wizardDtos);
 
+    }
+    @PutMapping("/{wizardId}/artifacts/{artifactId}")
+    public Result assignArtifact(@PathVariable Integer wizardId,@PathVariable String artifactId){
+        this.wizardService.assignArtifact(wizardId, artifactId);
+       return new Result(true, StatusCode.SUCCESS, "Artifact Assignment Success");
     }
 
 }

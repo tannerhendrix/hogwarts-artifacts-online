@@ -1,7 +1,7 @@
 package edu.tcu.cs.hogwartsartifactsonline.wizard;
 
 import jakarta.inject.Inject;
-import org.hibernate.ObjectNotFoundException;
+import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,22 +27,48 @@ class WizardServiceTest {
     WizardRepository wizardRepository;
     @InjectMocks
     WizardService wizardService;
+
+    List<Wizard> wizards;
     @BeforeEach
     void setUp() {
+        Wizard w1 = new Wizard();
+        w1.setId(1);
+        w1.setName("Albus Dumbledore");
+
+        Wizard w2 = new Wizard();
+        w2.setId(2);
+        w2.setName("Harry Potter");
+
+        Wizard w3 = new Wizard();
+        w3.setId(3);
+        w3.setName("Neville Longbottom");
+
+        this.wizards = new ArrayList<>();
+        this.wizards.add(w1);
+        this.wizards.add(w2);
+        this.wizards.add(w3);
     }
 
     @AfterEach
     void tearDown() {
     }
+    @Test
+    void testFindAllSuccess(){
+        //Given
+        given(this.wizardRepository.findAll()).willReturn(this.wizards);
+
+        //When
+        List<Wizard> actualWizards = this.wizardService.findAll();
+
+        //Then
+        assertThat(actualWizards.size()).isEqualTo(this.wizards.size());
+        verify(this.wizardRepository, times(1)).findAll();
+    }
 
     @Test
     void testFindByIdSuccess() {
         //Given. Arrange inputs and targets. Define the behavior of Mock object wizardRepository
-        /*
-           "id": 1,
-           "name": "Albus Dumbledore",
-           "numberOfArtifacts": 2
-*/
+
         Wizard w = new Wizard();
         w.setId(1);
         w.setName("Albus Dumbledore");
@@ -48,18 +76,18 @@ class WizardServiceTest {
         given(this.wizardRepository.findById(1)).willReturn(Optional.of(w));
 
         //When. Act on the target behavior. When steps should cover the method to be tested
-        Wizard returnedWizard = wizardService.findById(1);
+        Wizard returnedWizard = this.wizardService.findById(1);
 
         //Then. Assert expected outcomes
         assertThat(returnedWizard.getId()).isEqualTo(w.getId());
         assertThat(returnedWizard.getName()).isEqualTo(w.getName());
-        verify(wizardRepository, times(1)).findById(1);
+        verify(this.wizardRepository, times(1)).findById(1);
     }
 
     @Test
     void testFindByIdNotFound(){
         //Given
-        given(wizardRepository.findById(Mockito.any(Integer.class))).willReturn(Optional.empty());
+        given(this.wizardRepository.findById(Mockito.any(Integer.class))).willReturn(Optional.empty());
 
         //When
         Throwable thrown = catchThrowable(() -> {
@@ -68,7 +96,7 @@ class WizardServiceTest {
 
         //Then
         assertThat(thrown)
-                .isInstanceOf(WizardNotFoundException.class)
+                .isInstanceOf(ObjectNotFoundException.class)
                 .hasMessage("Could not find wizard with Id 1 :(");
         verify(this.wizardRepository, times(1)).findById(1);
     }

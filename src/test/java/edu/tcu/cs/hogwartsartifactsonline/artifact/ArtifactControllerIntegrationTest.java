@@ -64,6 +64,7 @@ public class ArtifactControllerIntegrationTest {
     }
     @Test
     @DisplayName("Check addArtifact with valid input (POST)")
+    //Look at again
     void testAddArtifactSuccess() throws Exception {
         Artifact a = new Artifact();
         a.setName("Remembrall");
@@ -86,6 +87,5 @@ public class ArtifactControllerIntegrationTest {
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Find All Success"))
                 .andExpect(jsonPath("$.data", Matchers.hasSize(7)));
-
     }
 }

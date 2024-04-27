@@ -91,19 +91,14 @@ public class ExceptionHandlerAdvice {
 
         String exceptionMessage = ex.getMessage();
 
-        // Replace <EOL> with actual newlines.
         exceptionMessage = exceptionMessage.replace("<EOL>", "\n");
 
-        // Extract the JSON part from the string.
         String jsonPart = exceptionMessage.substring(exceptionMessage.indexOf("{"), exceptionMessage.lastIndexOf("}") + 1);
 
-        // Create an ObjectMapper instance.
         ObjectMapper mapper = new ObjectMapper();
 
-        // Parse the JSON string to a JsonNode.
         JsonNode rootNode = mapper.readTree(jsonPart);
 
-        // Extract the message.
         String formattedExceptionMessage = rootNode.path("error").path("message").asText();
 
         return new ResponseEntity<>(

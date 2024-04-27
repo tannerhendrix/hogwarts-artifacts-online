@@ -2,6 +2,8 @@ package edu.tcu.cs.hogwartsartifactsonline.wizard;
 
 import edu.tcu.cs.hogwartsartifactsonline.artifact.Artifact;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.generator.Generator;
 
 import java.util.ArrayList;
@@ -10,18 +12,16 @@ import java.io.Serializable;
 
 @Entity
 public class Wizard implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
+    @NotEmpty
     private String name;
-
-    private Integer numberOfArtifacts;
     @OneToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
     private List<Artifact> artifacts = new ArrayList<>();
 
     public Wizard(){
-
     }
     public Integer getId() {
         return id;

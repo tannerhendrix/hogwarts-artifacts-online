@@ -6,6 +6,7 @@ import edu.tcu.cs.hogwartsartifactsonline.artifact.converter.ArtifactToArtifactD
 import edu.tcu.cs.hogwartsartifactsonline.artifact.dto.ArtifactDto;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
+import jakarta.validation.Valid;
 import jdk.jshell.Snippet;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class ArtifactController {
     }
 
     @PostMapping
-    public Result addArtifact(@RequestBody ArtifactDto artifactDto){
+    public Result addArtifact(@Valid @RequestBody ArtifactDto artifactDto){
        //Convert artifactDto to artifact
        Artifact newArtifact = this.artifactDtoToArtifactConverter.convert(artifactDto);
        Artifact savedArtifact = this.artifactService.save(newArtifact);
@@ -53,7 +54,7 @@ public class ArtifactController {
        return new Result(true, StatusCode.SUCCESS, "Add Success", savedArtifactDto);
     }
     @PutMapping("/{artifactId}")
-    public Result updateArtifact(@PathVariable String artifactId, @RequestBody ArtifactDto artifactDto){
+    public Result updateArtifact(@PathVariable String artifactId,@Valid @RequestBody ArtifactDto artifactDto){
         Artifact update = this.artifactDtoToArtifactConverter.convert(artifactDto);
         Artifact updatedArtifact = this.artifactService.update(artifactId, update);
         ArtifactDto updatedArtifactDto = this.artifactToArtifactDtoConverter.convert(updatedArtifact);

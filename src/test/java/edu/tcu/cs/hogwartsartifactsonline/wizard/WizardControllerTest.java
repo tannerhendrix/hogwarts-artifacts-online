@@ -134,7 +134,6 @@ class WizardControllerTest {
         //Given
         given(this.wizardService.findById(5)).willThrow(new ObjectNotFoundException("wizard", 5));
 
-
         //When and Then
         this.mockMvc.perform(get(baseUrl + "/wizards/5").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))

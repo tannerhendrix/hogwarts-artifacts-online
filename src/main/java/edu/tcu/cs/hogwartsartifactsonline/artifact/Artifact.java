@@ -3,6 +3,7 @@ import edu.tcu.cs.hogwartsartifactsonline.wizard.Wizard;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 @Entity
@@ -10,6 +11,7 @@ public class Artifact implements Serializable{
     @Id
     private String id;
 
+    @NotBlank
     private String name;
 
     private String description;
